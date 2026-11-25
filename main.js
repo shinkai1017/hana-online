@@ -186,6 +186,7 @@ async function createRoom() {
 
 // ルーム参加
 
+
 async function joinRoom() {
 
     const name = readName();
@@ -194,11 +195,9 @@ async function joinRoom() {
         $("room-input").value.trim().toUpperCase();
 
     if (!/^[A-Z0-9]{6}$/.test(code)) {
-
         throw new Error(
             "6文字のルームIDを入力してください。"
         );
-
     }
 
     const roomRef = ref(db, `rooms/${code}`);
@@ -229,14 +228,13 @@ async function joinRoom() {
     }
 
     if (room.state !== "waiting") {
-
         throw new Error(
             "このルームでは既にゲームが始まっています。"
         );
-
     }
 
     let joinedSlot = null;
+    let errorMessage = "";
 
     const result = await runTransaction(
 
@@ -245,9 +243,22 @@ async function joinRoom() {
         current => {
 
             joinedSlot = null;
+            errorMessage = "";
 
-            if (!current || current.state !== "waiting") {
+            // 初回のキャッシュが空の場合も
+            // サーバーとの照合を継続する
+
+            if (current === null) {
+                return null;
+            }
+
+            if (current.state !== "waiting") {
+
+                errorMessage =
+                    "既にゲームが始まっています。";
+
                 return;
+
             }
 
             current.players = current.players || {};
@@ -282,6 +293,8 @@ async function joinRoom() {
 
             }
 
+            errorMessage = "ルームが満員です。";
+
             return;
 
         },
@@ -293,7 +306,8 @@ async function joinRoom() {
     if (!result.committed || !joinedSlot) {
 
         throw new Error(
-            "参加できませんでした。満員の可能性があります。"
+            errorMessage ||
+            "ルームへの参加処理が中断されました。"
         );
 
     }
