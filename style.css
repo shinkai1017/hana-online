@@ -1,5 +1,4 @@
 
-
 * {
     box-sizing: border-box;
 }
@@ -8,148 +7,356 @@
     display: none !important;
 }
 
-body {
-    margin: 0;
-    padding: 24px 16px;
-    background: #141416;
-    color: #eeeeee;
-    font-family: sans-serif;
+:root {
+    color-scheme: dark;
+
+    --background: #151517;
+    --panel: #222226;
+    --gold: #e4c58b;
+    --text: #eeeeee;
+    --border: #444449;
 }
 
-.container {
-    max-width: 540px;
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, "Noto Sans JP", sans-serif;
+}
+
+#app {
+    width: 100%;
+    max-width: 760px;
     margin: auto;
-    padding: 28px;
-    background: #202024;
-    border: 1px solid #39393d;
-    border-radius: 16px;
+    padding: 16px;
 }
 
 header {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
-header h1 {
-    color: #e6c58b;
-    font-size: 48px;
-    letter-spacing: 12px;
-    margin: 0;
-}
-
-header p {
-    color: #999999;
-    font-size: 12px;
+h1 {
+    color: var(--gold);
     letter-spacing: 4px;
 }
 
-h2 {
-    font-size: 18px;
-    margin-top: 24px;
+h2, h3 {
+    color: var(--gold);
+}
+
+h3 {
+    font-size: 16px;
+}
+
+p {
+    line-height: 1.6;
 }
 
 label {
     display: block;
-    margin: 14px 0 6px;
-    color: #bbbbbb;
-    font-size: 14px;
+    margin: 12px 0 6px;
 }
 
-input, select, button {
+input, select, textarea, button {
+    font: inherit;
+    border-radius: 6px;
+}
+
+input, select, textarea {
     width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-input, select {
-    background: #161618;
-    color: white;
-    border: 1px solid #444444;
+    padding: 10px;
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
 }
 
 button {
-    margin-top: 12px;
-    border: none;
-    background: #e6c58b;
+    width: 100%;
+    padding: 11px;
+    margin-top: 8px;
+    background: var(--gold);
     color: #222222;
+    border: none;
     font-weight: bold;
     cursor: pointer;
 }
 
 button:hover:not(:disabled) {
-    filter: brightness(1.1);
+    filter: brightness(1.12);
 }
 
 button:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
-}
-
-button.secondary {
-    background: #39393d;
-    color: white;
 }
 
 hr {
     border: none;
-    border-top: 1px solid #444444;
-    margin: 28px 0;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
 }
 
-#status {
-    font-size: 13px;
-    color: #aaaaaa;
-    overflow-wrap: anywhere;
+.room-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.room-header button {
+    width: auto;
+    margin: 0 0 0 auto;
 }
 
 #room-code {
-    color: #e6c58b;
-    font-size: 36px;
-    letter-spacing: 6px;
-    text-align: center;
+    color: var(--gold);
+    letter-spacing: 2px;
 }
 
 #player-list {
-    list-style: none;
-    padding: 0;
+    padding-left: 24px;
+    line-height: 2;
 }
 
-#player-list li {
-    padding: 12px;
-    margin: 6px 0;
-    background: #303034;
+/* ゲーム情報 */
+
+.game-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.game-stats > div {
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 12px 3px;
+    text-align: center;
+}
+
+.game-stats small {
+    display: block;
+    color: #aaaaaa;
+    margin-bottom: 6px;
+}
+
+.game-stats strong {
+    color: var(--gold);
+    font-size: 20px;
+}
+
+#turn-display {
+    text-align: center;
+    padding: 10px;
     border-radius: 6px;
+    background: var(--panel);
+    color: var(--gold);
+    font-weight: bold;
+}
+
+#last-action,
+#final-turns,
+#received-hint {
+    font-size: 14px;
+}
+
+#received-hint {
+    color: var(--gold);
+}
+
+/* カード */
+
+.card-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.game-card {
+    position: relative;
+    flex: 0 1 110px;
+    min-width: 0;
+    aspect-ratio: 3 / 4;
+    border: 2px solid var(--card-color, #777777);
+    border-radius: 8px;
+    background: #242428;
+    color: var(--card-color, #dddddd);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.card-number {
+    font-size: clamp(20px, 5vw, 38px);
+    font-weight: bold;
+}
+
+.card-label {
+    font-size: 12px;
+}
+
+.game-card img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    object-fit: contain;
+}
+
+.game-card.selected {
+    outline: 3px solid var(--gold);
+    outline-offset: -3px;
+    transform: translateY(-5px);
+}
+
+.game-card.hinted {
+    box-shadow: inset 0 0 0 3px #ffdc76;
+    border-color: #ffdc76;
+}
+
+.game-card.empty {
+    opacity: 0.5;
+}
+
+.card-white {
+    --card-color: #f3eee1;
+}
+
+.card-blue {
+    --card-color: #8dbaff;
+}
+
+.card-red {
+    --card-color: #fa688b;
+}
+
+.card-green {
+    --card-color: #92c977;
+}
+
+.card-yellow {
+    --card-color: #ebd15b;
+}
+
+.card-back {
+    --card-color: #e4c58b;
+}
+
+.player-hand {
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.player-hand h3 {
+    margin-top: 0;
+}
+
+.action-row {
+    display: flex;
+    gap: 8px;
+}
+
+#hint-controls select {
+    margin-bottom: 6px;
+}
+
+#private-memo {
+    min-height: 130px;
+    resize: vertical;
+}
+
+#discard-pile {
+    font-size: 14px;
+    line-height: 1.8;
+    padding: 10px 0;
+}
+
+/* チャット */
+
+#chat-section {
+    margin-top: 24px;
 }
 
 #chat-log {
-    height: 220px;
+    height: 180px;
     overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 13px;
     overflow-wrap: anywhere;
-    white-space: pre-wrap;
-    padding: 12px;
-    background: #161618;
-    border: 1px solid #444444;
-    border-radius: 8px;
 }
 
-.chat-message {
-    font-size: 14px;
-    margin-bottom: 8px;
+#chat-log p {
+    margin: 4px 0;
 }
 
 #chat-form {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     margin-top: 8px;
 }
 
 #chat-form input {
-    flex: 1;
     min-width: 0;
 }
 
 #chat-form button {
-    width: 70px;
+    width: 72px;
+    flex-shrink: 0;
     margin: 0;
+}
+
+#leave-room {
+    background: #39393e;
+    color: #eeeeee;
+    margin-top: 24px;
+}
+
+/* リザルト */
+
+#result-screen {
+    text-align: center;
+}
+
+#result-score {
+    color: var(--gold);
+    font-size: 52px;
+    font-weight: bold;
+    padding: 20px 0;
+}
+
+#result-evaluation {
+    color: var(--gold);
+    font-size: 20px;
+}
+
+@media (max-width: 480px) {
+
+    #app {
+        padding: 10px;
+    }
+
+    .game-stats strong {
+        font-size: 17px;
+    }
+
+    .card-row {
+        gap: 5px;
+    }
+
+    .player-hand {
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
 }
