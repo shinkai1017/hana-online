@@ -1,9 +1,18 @@
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-
-import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+import {
+    getDatabase,
+    ref,
+    set,
+    get,
+    remove,
+    onValue,
+    push,
+    runTransaction,
+    query,
+    limitToLast,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -20,6 +29,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+
 export {
     auth,
     db,
@@ -27,5 +37,11 @@ export {
     ref,
     set,
     get,
-    remove
+    remove,
+    onValue,
+    push,
+    runTransaction,
+    query,
+    limitToLast,
+    serverTimestamp
 };
