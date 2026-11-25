@@ -1,4 +1,6 @@
 
+
+
 import {
     COLORS,
     COLOR_NAMES,
@@ -65,6 +67,14 @@ function createCard(card, options = {}) {
         number.textContent = "?";
 
         element.append(number);
+
+        const image = document.createElement("img");
+        image.alt = "裏向きのカード";
+        image.hidden = true;
+        image.onload = () => { image.hidden = false; };
+        image.onerror = () => { image.remove(); };
+        image.src = "./images/back.png";
+        element.append(image);
 
     } else {
 
@@ -360,32 +370,26 @@ function updateButtons() {
 function renderDiscard(game) {
 
     const container = $("discard-pile");
-
+    const cards = game.discard || [];
     container.replaceChildren();
 
-    for (const color of COLORS) {
+    const caption = document.createElement("div");
+    caption.className = "discard-caption";
+    caption.textContent = cards.length
+        ? `全${cards.length}枚（捨てられた順）`
+        : "捨て札はありません。";
+    container.append(caption);
 
-        const counts = [0, 0, 0, 0, 0];
+    if (!cards.length) return;
 
-        for (const card of game.discard || []) {
+    const grid = document.createElement("div");
+    grid.className = "discard-grid";
 
-            if (card.color === color) {
-                counts[card.number - 1]++;
-            }
-
-        }
-
-        const line = document.createElement("div");
-
-        line.textContent =
-            `${COLOR_NAMES[color]}：`
-            + counts.map((count, i) =>
-                `${i + 1}×${count}`
-            ).join("　");
-
-        container.append(line);
-
+    for (const card of cards) {
+        grid.append(createCard(card));
     }
+
+    container.append(grid);
 
 }
 
