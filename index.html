@@ -3,80 +3,224 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hana Online</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>HANA ONLINE</title>
     <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-    <main class="container">
-        <header>
-            <h1>HANABI</h1>
-            <p>ONLINE CARD GAME</p>
-        </header>
 
+<main id="app">
+
+    <header>
+        <h1>HANA ONLINE</h1>
         <p id="status">接続中...</p>
+    </header>
 
-        <section id="title-screen" hidden>
-            <label for="player-name">プレイヤー名</label>
-            <input id="player-name" maxlength="20"
-                   placeholder="名前を入力">
+    <!-- タイトル画面 -->
 
-            <h2>ルーム作成</h2>
+    <section id="title-screen" hidden>
 
-            <label for="player-count">プレイ人数</label>
-            <select id="player-count">
-                <option value="2">2人</option>
-                <option value="3">3人</option>
-                <option value="4">4人</option>
-                <option value="5">5人</option>
-            </select>
+        <h2>オンラインプレイ</h2>
 
-            <label for="game-mode">ゲームモード</label>
-            <select id="game-mode">
-                <option value="normal">ノーマルモード</option>
-                <option value="memo">メモモード</option>
-            </select>
+        <label>プレイヤー名</label>
+        <input id="player-name" maxlength="20"
+               placeholder="名前を入力">
 
-            <button id="create-room">ルーム作成</button>
+        <h2>ルームを作成</h2>
+
+        <label>プレイ人数</label>
+        <select id="player-count">
+            <option value="2">2人</option>
+            <option value="3">3人</option>
+            <option value="4">4人</option>
+            <option value="5">5人</option>
+        </select>
+
+        <label>ゲームモード</label>
+        <select id="game-mode">
+            <option value="normal">ノーマルモード</option>
+            <option value="memo">メモモード</option>
+        </select>
+
+        <button id="create-room">ルームを作成</button>
+
+        <hr>
+
+        <h2>ルームに参加</h2>
+
+        <input id="room-input" maxlength="6"
+               placeholder="ルームID">
+
+        <button id="join-room">参加する</button>
+
+    </section>
+
+    <!-- ルーム共通画面 -->
+
+    <section id="room-screen" hidden>
+
+        <div class="room-header">
+            <span>ROOM：</span>
+            <strong id="room-code"></strong>
+            <button id="copy-room">コピー</button>
+        </div>
+
+        <p id="room-info"></p>
+
+        <!-- 待機ロビー -->
+
+        <section id="lobby-screen" hidden>
+
+            <h2>参加プレイヤー</h2>
+
+            <ul id="player-list"></ul>
+
+            <button id="start-game" disabled>
+                ゲーム開始
+            </button>
+
+        </section>
+
+        <!-- ゲーム画面 -->
+
+        <section id="game-screen" hidden>
+
+            <div class="game-stats">
+
+                <div>
+                    <small>スコア</small>
+                    <strong id="game-score"></strong>
+                </div>
+
+                <div>
+                    <small>ヒント</small>
+                    <strong id="game-hints"></strong>
+                </div>
+
+                <div>
+                    <small>ミス</small>
+                    <strong id="game-mistakes"></strong>
+                </div>
+
+                <div>
+                    <small>山札</small>
+                    <strong id="deck-count"></strong>
+                </div>
+
+            </div>
+
+            <p id="turn-display"></p>
+            <p id="final-turns"></p>
+            <p id="last-action"></p>
+
+            <h3>完成状況</h3>
+            <div id="stacks" class="card-row"></div>
 
             <hr>
 
-            <h2>ルーム参加</h2>
-            <input id="room-input" maxlength="6"
-                   placeholder="ルームID">
-            <button id="join-room">ルーム参加</button>
+            <div id="other-hands"></div>
+
+            <div id="hint-controls" hidden>
+
+                <h3>ヒントを出す</h3>
+
+                <select id="hint-target"></select>
+
+                <select id="hint-type">
+                    <option value="color">色</option>
+                    <option value="number">数字</option>
+                </select>
+
+                <select id="hint-value"></select>
+
+                <button id="give-hint">
+                    ヒントを出す
+                </button>
+
+            </div>
+
+            <hr>
+
+            <h3>あなたの手札</h3>
+
+            <div id="my-hand" class="card-row"></div>
+
+            <p id="received-hint"></p>
+
+            <div class="action-row">
+                <button id="play-card">提出する</button>
+                <button id="discard-card">破棄する</button>
+            </div>
+
+            <div class="action-row">
+                <button id="move-left">← 左へ移動</button>
+                <button id="move-right">右へ移動 →</button>
+            </div>
+
+            <section id="memo-section" hidden>
+                <h3>個人メモ</h3>
+                <textarea id="private-memo"
+                          placeholder="自由に記入できます"></textarea>
+            </section>
+
+            <hr>
+
+            <details>
+                <summary>捨て札一覧</summary>
+                <div id="discard-pile"></div>
+            </details>
+
         </section>
 
-        <section id="lobby-screen" hidden>
-            <p>ROOM ID</p>
-            <h2 id="room-code"></h2>
-            <button id="copy-room">IDをコピー</button>
+        <!-- リザルト画面 -->
 
-            <p id="room-info"></p>
+        <section id="result-screen" hidden>
 
-            <h2>参加者</h2>
-            <ul id="player-list"></ul>
+            <h2>GAME RESULT</h2>
 
-            <h2>チャット</h2>
+            <div id="result-score"></div>
+
+            <p id="result-evaluation"></p>
+            <p id="result-reason"></p>
+
+            <div id="result-stacks"
+                 class="card-row"></div>
+
+            <button id="return-lobby">
+                ロビーに戻る
+            </button>
+
+        </section>
+
+        <!-- 共通チャット -->
+
+        <section id="chat-section">
+
+            <h3>チャット</h3>
+
             <div id="chat-log"></div>
 
             <form id="chat-form">
-                <input id="chat-input" maxlength="300"
-                       placeholder="メッセージを入力"
-                       autocomplete="off">
+                <input id="chat-input"
+                       maxlength="300"
+                       autocomplete="off"
+                       placeholder="メッセージを入力">
                 <button type="submit">送信</button>
             </form>
 
-            <button id="start-game" disabled>
-                ゲーム開始（未実装）
-            </button>
-            <button id="leave-room" class="secondary">
-                退出
-            </button>
         </section>
-    </main>
 
-    <script type="module" src="./main.js"></script>
+        <button id="leave-room">
+            ルームから退出
+        </button>
+
+    </section>
+
+</main>
+
+<script type="module" src="./main.js"></script>
+
 </body>
 </html>
-
