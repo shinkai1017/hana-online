@@ -360,3 +360,58 @@ hr {
         font-size: 25px;
     }
 }
+
+
+/* 場のカードと捨て札一覧 */
+#stacks {
+    border: 1px solid #a28b53;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.discard-caption {
+    margin-bottom: 8px;
+    color: #cccccc;
+}
+
+.discard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(48px, 64px));
+    gap: 6px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 4px;
+}
+
+.discard-grid .game-card {
+    width: 100%;
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+.discard-grid .card-number { font-size: 22px; }
+.discard-grid .card-label { font-size: 10px; }
+
+/* 画像より手前にヒント・選択状態を表示 */
+.game-card.hinted::after,
+.game-card.selected::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 3px solid #ffdc76;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.game-card.selected::after {
+    border-color: var(--gold);
+    border-style: dashed;
+}
+
+@media (max-width: 480px) {
+    #stacks { padding: 6px; }
+    .discard-grid {
+        grid-template-columns: repeat(auto-fill, minmax(42px, 52px));
+    }
+}
