@@ -254,7 +254,16 @@ function finishGame(game, reason) {
 
 function drawCard(game, uid) {
 
+    // 山札が空の状態で補充を試みた場合
     if (game.deck.length === 0) {
+
+        // 最終ラウンドが未開始の場合のみ開始
+        if (game.finalTurns < 0) {
+
+            game.finalTurns = game.playerOrder.length - 1;
+
+        }
+
         return;
     }
 
@@ -263,12 +272,6 @@ function drawCard(game, uid) {
     // 新しいカードは必ず右端
     game.hands[uid].push(card);
 
-    // 最後のカードを引いた場合
-    if (game.deck.length === 0) {
-
-        game.finalTurns = game.playerOrder.length;
-
-    }
 }
 
 // ========================================
